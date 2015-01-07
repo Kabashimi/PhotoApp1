@@ -18,20 +18,20 @@
         android:id="@+id/drawBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/takePhotoBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="57dp"
-        android:text="@string/draw" 
-        android:onClick="DrawBtnClick"/>
+        android:layout_marginTop="75dp"
+        android:onClick="DrawBtnClick"
+        android:text="@string/draw" />
 
     <Button
         android:id="@+id/sendBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="58dp"
-        android:text="@string/send" 
-        android:onClick="SendBtnClick"/>
+        android:layout_alignLeft="@+id/drawBtn"
+        android:layout_below="@+id/drawBtn"
+        android:layout_marginTop="78dp"
+        android:onClick="SendBtnClick"
+        android:text="@string/send" />
 
 </RelativeLayout>
