@@ -3,5 +3,8 @@
 
     <string name="app_name">PhotoApp</string>
     <string name="hello_world">Hello world!</string>
+    <string name="take_photo">Zrób zdjęcie</string>
+    <string name="draw">Rysuj</string>
+    <string name="send">Wyślij</string>
 
 </resources>
