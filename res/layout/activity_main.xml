@@ -31,7 +31,7 @@
         android:layout_alignLeft="@+id/drawBtn"
         android:layout_below="@+id/drawBtn"
         android:layout_marginTop="78dp"
-        android:onClick="SendBtnClick"
+        android:onClick="SendPhotoBtnClick"
         android:text="@string/send" />
 
 </RelativeLayout>
