@@ -1,18 +1,34 @@
 package com.example.photoapp;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private Bitmap bp;
+	private Bitmap bmp;
+	private String fileName;
+	private String myDirectory;
+	private String[] recipients = {"johny.dudek@gmail.com"};
+	private Uri uriSavedImage;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +39,18 @@ public class MainActivity extends Activity {
     
     
     private void setup() {
-		bp = null;
+		bmp = null;
+		fileName = "PhotoApp_photo1";
+		myDirectory = "/PhotoApp";
+		uriSavedImage = null;
 		
+		
+		File direct = new File(Environment.getExternalStorageDirectory() + myDirectory);
+
+        if (!direct.exists()) {
+            File wallpaperDirectory = new File("/sdcard"+myDirectory+"/");
+            wallpaperDirectory.mkdirs();
+        }
 	}
 
 
@@ -39,18 +65,43 @@ public class MainActivity extends Activity {
     }
 
     public void SendPhotoBtnClick(View v){
-    	sendMail();
+    	String path =  savePhoto();
+    	
+    	sendMail(path);
 }
 
-    private void sendMail() {
-    	 String[] recipients = {"ricipients"};
+    
+    private String savePhoto() {
+    	
+
+        File file = new File(new File("/sdcard"+myDirectory+"/"), fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       return file.getAbsolutePath();
+	}
+
+
+	private void sendMail(String path) {
+    	 if(uriSavedImage!=null){
     	 	      Intent email = new Intent(Intent.ACTION_SEND, Uri.parse("mailto:"));
     	 	      // prompts email clients only
     	 	      email.setType("message/rfc822");
     	 	 
     	 	      email.putExtra(Intent.EXTRA_EMAIL, recipients);
-    	 	      email.putExtra(Intent.EXTRA_SUBJECT, "subject");
-    	 	      email.putExtra(Intent.EXTRA_TEXT, "body");
+    	 	      email.putExtra(Intent.EXTRA_SUBJECT, "Photo from my App");
+    	 	      email.putExtra(Intent.EXTRA_TEXT, "Just enjoy it");
+    	 	      
+    	 	      
+    	 	      email.putExtra(Intent.EXTRA_STREAM, uriSavedImage);
     	 	 
     	 	      try {
     	 	        // the user can choose the email client
@@ -60,24 +111,28 @@ public class MainActivity extends Activity {
     	 	         Toast.makeText(MainActivity.this, "No email client installed.",
     	 	                 Toast.LENGTH_LONG).show();
     	 	      }
+    	 }
 	}
 
 
 	public void openCamera(){
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 0);
+		
+        Intent camera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        uriSavedImage=Uri.fromFile(new File("/sdcard/flashCropped.png"));
+		camera.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+        startActivityForResult(camera, 1);
      }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       super.onActivityResult(requestCode, resultCode, data);
+       /*super.onActivityResult(requestCode, resultCode, data);
        
        if (resultCode == RESULT_OK){
-    		   bp = (Bitmap) data.getExtras().get("data");
+    		   bmp = (Bitmap) data.getExtras().get("data");
        }else{
     	   Toast.makeText(getApplicationContext(), "Nie zapisano zdjêcia", Toast.LENGTH_SHORT).show();
        }
        //imgFavorite.setImageBitmap(bp);
-    }
+    */}
     
 }
