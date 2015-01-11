@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -40,17 +41,9 @@ public class MainActivity extends Activity {
     
     private void setup() {
 		bmp = null;
-		fileName = "PhotoApp_photo1";
-		myDirectory = "/PhotoApp";
-		uriSavedImage = null;
-		
-		
-		File direct = new File(Environment.getExternalStorageDirectory() + myDirectory);
+		fileName = "/sdcard/PhotoApp/photo.png";
 
-        if (!direct.exists()) {
-            File wallpaperDirectory = new File("/sdcard"+myDirectory+"/");
-            wallpaperDirectory.mkdirs();
-        }
+		
 	}
 
 
@@ -61,7 +54,8 @@ public class MainActivity extends Activity {
     }
     
     public void DrawBtnClick(View v){
-    	
+    	Intent intent = new Intent(this,Drawing.class);
+    	startActivity(intent);
     }
 
     public void SendPhotoBtnClick(View v){
@@ -118,21 +112,10 @@ public class MainActivity extends Activity {
 	public void openCamera(){
 		
         Intent camera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        uriSavedImage=Uri.fromFile(new File("/sdcard/flashCropped.png"));
+        uriSavedImage=Uri.fromFile(new File(fileName));
 		camera.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
         startActivityForResult(camera, 1);
      }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       /*super.onActivityResult(requestCode, resultCode, data);
-       
-       if (resultCode == RESULT_OK){
-    		   bmp = (Bitmap) data.getExtras().get("data");
-       }else{
-    	   Toast.makeText(getApplicationContext(), "Nie zapisano zdjêcia", Toast.LENGTH_SHORT).show();
-       }
-       //imgFavorite.setImageBitmap(bp);
-    */}
+   
     
 }
