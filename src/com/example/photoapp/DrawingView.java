@@ -1,6 +1,8 @@
 package com.example.photoapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,12 +19,19 @@ public class DrawingView extends View {
 		paint.setColor(Color.BLACK);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeJoin(Paint.Join.ROUND);
-		canvas = new Canvas();
+		//canvas = new Canvas(bitmap.copy(Bitmap.Config.ARGB_8888, true));
 	}
 
 	@Override
 	protected void onDraw(Canvas canvasX) {
 		canvas = canvasX;
+		//Bitmap bitmap = BitmapFactory.decodeFile(MainActivity.fileName);
+		
+		BitmapFactory.Options o = new BitmapFactory.Options();
+		o.inSampleSize = 2;
+		Bitmap b = BitmapFactory.decodeFile(MainActivity.fileName, o);
+		
+		canvas = new Canvas(b.copy(Bitmap.Config.ARGB_8888, true));
 		canvas.drawPath(path,paint);
 		
 	}

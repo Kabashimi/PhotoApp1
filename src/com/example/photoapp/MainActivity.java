@@ -26,7 +26,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	private Bitmap bmp;
-	private String fileName;
+	public static String fileName = "/sdcard/PhotoApp/photo.png";
 	private String myDirectory;
 	private String[] recipients = {"johny.dudek@gmail.com"};
 	private Uri uriSavedImage;
@@ -41,8 +41,6 @@ public class MainActivity extends Activity {
     
     private void setup() {
 		bmp = null;
-		fileName = "/sdcard/PhotoApp/photo.png";
-
 		
 	}
 
